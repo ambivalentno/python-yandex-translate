@@ -1,7 +1,6 @@
 # coding: utf-8
 
 from distutils.core import setup
-import yandex_translate
 
 setup(name='yandex.translate',
       version=yandex_translate.__version__,
