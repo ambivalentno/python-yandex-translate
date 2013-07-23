@@ -30,6 +30,13 @@ class YandexTranslateTest(unittest.TestCase):
         self.assertEqual(result['text'][0], u'Здравствуйте!')
         self.assertEqual(result['code'], 200)
 
+    def test_translate_post(self):
+        big_text = u'Приветик! ' * 999
+        result = self.translate.translate(big_text, 'en', method='post')
+        first_word = result['text'][0].split(' ')[0]
+        self.assertEqual(first_word, u'Hello!')
+        self.assertEqual(result['code'], 200)
+
     def test_language_detection_error(self):
         with self.assertRaises(YandexTranslateException,
                                msg="ERR_LANG_NOT_SUPPORTED"):
