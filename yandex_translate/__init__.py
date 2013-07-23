@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # coding:utf-8
+import requests
 
 __version__ = "0.3.2"
 
@@ -124,7 +125,7 @@ class YandexTranslate(object):
             raise YandexTranslateException(self.error_codes[501])
         return result['lang']
 
-    def translate(self, text, lang, format='plain'):
+    def translate(self, text, lang, format='plain', method='get'):
         """
         Translate text to passed language
         :param text: Source text
@@ -145,10 +146,16 @@ class YandexTranslate(object):
         Traceback (most recent call last):
         YandexTranslateException: ERR_SERVICE_NOT_AVAIBLE
         """
-        data = urlencode({'text': text, 'format': format, 'lang': lang, 'key': self.api_key})
+        data = {'text': text, 'format': format, 'lang': lang, 'key': self.api_key}
         try:
-            result = urlopen(self.api_urls['translate'] % data).read()
-            json = loads(result.decode("utf-8"))
+            if method == 'get':
+                data = urlencode(data)
+                result = urlopen(self.api_urls['translate'] % data).read()
+                json = loads(result.decode("utf-8"))
+            if method == 'post':
+                url = 'https://translate.yandex.net/api/v1.5/tr.json/translate'
+                result = requests.post(url, data)
+                json = result.json()
         except IOError:
             raise YandexTranslateException(self.error_codes[503])
         except ValueError:

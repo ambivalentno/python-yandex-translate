@@ -23,4 +23,5 @@ setup(name='yandex.translate',
           'Programming Language :: Python :: 3.3',
       ],
       platforms=['All'],
+      requires=['requests(>=1.2.3)']
       )
